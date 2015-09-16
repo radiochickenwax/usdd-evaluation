@@ -50,10 +50,7 @@
           rate, and the TCP port number using command line arguments
 	- Use libevent instead of select/poll
 	- Use non-blocking I/O (O_NONBLOCK) and handle buffering and
-          partial writes (EAGAIN).
-
-
-#  Bonus Feature
+          partial writes (#  Bonus Feature
 
 	Whenever the program receives an STX (0x02) byte over the TCP
 	connection, assert the RTS line instead of writing it out to
