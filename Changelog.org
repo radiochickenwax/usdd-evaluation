@@ -1,0 +1,6 @@
+
+** Wed Sep 16, 2015
+
+*** 10:20:09 Setting up program structure and parsing requirements.
+    
+     
