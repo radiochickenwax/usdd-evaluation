@@ -2,7 +2,7 @@
 #  Objective:
 	Implement a simple serial TCP port server using C.  At
 	startup, the program should open a serial port device (default
-	/devb/ttyS0) and set the baud rate (default 9600 ).   It
+	/dev/ttyS0) and set the baud rate (default 9600 ).   It
 	should also create a TCP socket and bind it to a port (default
 	10000).  The program should then listen for connections on the
 	TCP socket.
