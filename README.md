@@ -1,4 +1,4 @@
-/*
+
   Objective:
 	Implement a simple serial TCP port server using C.  At
 	startup, the program should open a serial port device (default
@@ -62,4 +62,4 @@
 
   Deliverables:
   README.txt file, Makefile and all C source and header files
- */
+
