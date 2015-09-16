@@ -1,5 +1,5 @@
 
-  Objective:
+#  Objective:
 	Implement a simple serial TCP port server using C.  At
 	startup, the program should open a serial port device (default
 	/devb/ttyS0) and set the baud rate (default 9600 ).   It
@@ -13,7 +13,7 @@
 	client.
 
 
-  Environment
+#  Environment
 	USDD will provide a shell account on a Linux development
 	server with 2 serial ports. The serial ports will be connected
 	together with a null modem cable.  
@@ -28,7 +28,7 @@
 	other reference material is permitted and encouraged.
 
   
-  Requirements
+#  Requirements
 
 	- only 1 TCP connection can be active at a time, subsequent
           connection requests should be refused.
@@ -44,7 +44,7 @@
 
 
 	
-  Bonus Points
+#  Bonus Points
 
 	- Allow the user to specify the serial port device, the baud
           rate, and the TCP port number using command line arguments
@@ -53,13 +53,13 @@
           partial writes (EAGAIN).
 
 
-  Bonus Feature
+#  Bonus Feature
 
 	Whenever the program receives an STX (0x02) byte over the TCP
 	connection, assert the RTS line instead of writing it out to
 	the serial port.  Similarly, when it receives an ETX (0x03)
 	byte, de-assert the RTS line.
 
-  Deliverables:
+#  Deliverables:
   README.txt file, Makefile and all C source and header files
 
