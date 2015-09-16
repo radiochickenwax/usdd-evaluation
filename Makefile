@@ -1,5 +1,9 @@
 default: server
 
+
+serialExample: serialExample.c
+	gcc -g -Wall  -o serialExample serialExample.c
+
 server: server.o
 	gcc -g -Wall -o server server.o
 

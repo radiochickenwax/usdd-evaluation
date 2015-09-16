@@ -1,19 +1,17 @@
 This file is meant to be read with emacs org-mode
 
 
-** TODO Wed Sep 16, 2015 [0/0]
-
+** TODO Wed Sep 16, 2015 [0/2]
 *** TODO 10:20:09 Setup up program structure and parsing requirements. [0/2]
-**** STARTED Determine architecture [1/4]
+**** STARTED Determine architecture [3/5]
 
-***** STARTED server.c and client.c or just server.c
+***** DONE server.c and client.c or just server.c
+      CLOSED: [2015-09-16 Wed 12:08]
        I'm currently thinking I just need server.c, and the client will
        be minicom.  
 
       ( Wasn't sure at first if I needed both client.c and
       server.c. Will ask Eric to confirm this.)   
-
-***** STARTED (http://www.wangafu.net/~nickm/libevent-book/01_intro.html ) determine difference between libevent (event2/event.h ) and plain sys/socket.h calls
 
 ***** DONE add some example code to start
       CLOSED: [2015-09-16 Wed 11:37]
@@ -24,6 +22,49 @@ This file is meant to be read with emacs org-mode
 
       Still need a makefile.
 
-***** TODO fill in makefile for example code
-**** TODO Fill in architecture using socket.h or event.h
+***** DONE fill in makefile for example code
+      CLOSED: [2015-09-16 Wed 12:08]
 
+***** TODO how to open serial port
+http://www.cmrr.umn.edu/~strupp/serial.html
+
+[[file:serialExample.c]]
+
+#include <stdio.h>   /* Standard input/output definitions */
+#include <string.h>  /* String function definitions */
+#include <unistd.h>  /* UNIX standard function definitions */
+#include <fcntl.h>   /* File control definitions */
+#include <errno.h>   /* Error number definitions */
+#include <termios.h> /* POSIX terminal control definitions */
+
+/*
+ * 'open_port()' - Open serial port 1.
+ *
+ * Returns the file descriptor on success or -1 on error.
+ */
+
+int
+open_port(void)
+{
+  int fd; /* File descriptor for the port */
+
+
+  fd = open("/dev/ttyf1", O_RDWR | O_NOCTTY | O_NDELAY);
+  if (fd == -1)
+  {
+   /*
+    * Could not open the port.
+    */
+
+    perror("open_port: Unable to open /dev/ttyf1 - ");
+  }
+  else
+    fcntl(fd, F_SETFL, 0);
+
+  return (fd);
+}
+
+
+***** STARTED (http://www.wangafu.net/~nickm/libevent-book/01_intro.html ) determine difference between libevent (event2/event.h ) and plain sys/socket.h calls
+**** TODO Fill in architecture using socket.h or event.h
+*** TODO 
