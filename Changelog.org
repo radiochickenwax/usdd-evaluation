@@ -1,10 +1,10 @@
-# This file is meant to be read with emacs org-mode
+This file is meant to be read with emacs org-mode
 
 
 ** TODO Wed Sep 16, 2015 [0/0]
 
 *** TODO 10:20:09 Setup up program structure and parsing requirements. [0/2]
-**** STARTED Determine architecture [0/4]
+**** STARTED Determine architecture [1/4]
 
 ***** STARTED server.c and client.c or just server.c
        I'm currently thinking I just need server.c, and the client will
@@ -13,8 +13,17 @@
       ( Wasn't sure at first if I needed both client.c and
       server.c. Will ask Eric to confirm this.)   
 
-***** TODO (http://www.wangafu.net/~nickm/libevent-book/01_intro.html ) determine difference between libevent (event2/event.h ) and plain sys/socket.h calls
-***** TODO add some example code to start
+***** STARTED (http://www.wangafu.net/~nickm/libevent-book/01_intro.html ) determine difference between libevent (event2/event.h ) and plain sys/socket.h calls
+
+***** DONE add some example code to start
+      CLOSED: [2015-09-16 Wed 11:37]
+
+      To start, I'm using my old server which is a modification from 
+
+      http://www.linuxhowtos.org/C_C++/socket.htm
+
+      Still need a makefile.
+
 ***** TODO fill in makefile for example code
-**** TODO Fill in architecture using sys.h or 
+**** TODO Fill in architecture using socket.h or event.h
 
