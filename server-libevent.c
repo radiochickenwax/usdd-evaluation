@@ -1,4 +1,11 @@
 /*
+  Taken from low-level event.h tutorial.
+  http://www.wangafu.net/~nickm/libevent-book/01_intro.html
+
+  Note there's a lot more to be read in this book.  This is only the
+  first chapter.  
+
+
 #  Objective:
 	Implement a simple serial TCP port server using C.  At
 	startup, the program should open a serial port device (default
@@ -89,23 +96,6 @@ void do_read(evutil_socket_t fd, short events, void *arg);
 void do_write(evutil_socket_t fd, short events, void *arg);
 
 /*
-  // superfluous function 
-char rot13_char(char c)
-{
-    // We don't want to use isalpha here; setting the locale would change
-    //   which characters are considered alphabetical. 
-
-    if ((c >= 'a' && c <= 'm') || (c >= 'A' && c <= 'M'))
-        return c + 13;
-    else if ((c >= 'n' && c <= 'z') || (c >= 'N' && c <= 'Z'))
-        return c - 13;
-    else
-        return c;
-}
-*/
-
-
-/*
   structure to store state.
   
   What gets stored in buffer exactly?  Lines?
@@ -120,8 +110,13 @@ struct fd_state {
   
   // event structs are explained at:  
   // (browse-url "http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/structevent.html")
+
   // alternatively at:
-  // (find-file-other-window "/usr/include/event2/event.h")
+  /*
+    (progn 
+    (find-file-other-window "/usr/include/event2/event.h")
+    (search-forward "@struct event"))
+  */
   struct event *read_event;	
   struct event *write_event;
 };
@@ -238,10 +233,11 @@ void do_accept(evutil_socket_t listener, short event, void *arg)
         assert(state); /*XXX err*/
         assert(state->write_event);
         event_add(state->read_event, NULL);
+	printf("Connection accepted\n");
     }
 }
 
-void run(void)
+void run(int portNo)
 {
     evutil_socket_t listener;
     struct sockaddr_in sin;
@@ -254,7 +250,7 @@ void run(void)
 
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = 0;
-    sin.sin_port = htons(40713);
+    sin.sin_port = htons(portNo);
 
     listener = socket(AF_INET, SOCK_STREAM, 0);
     evutil_make_socket_nonblocking(listener);
@@ -276,10 +272,30 @@ void run(void)
     event_base_dispatch(base);
 }
 
-int main(int c, char **v)
+int main(int argc, char **argv)
 {
-    setvbuf(stdout, NULL, _IONBF, 0);
+  int TCP_port, baudRate;
 
-    run();
-    return 0;
+  
+  // if commandline args are not set, then use defaults
+  if ( argc < 4 ){
+    TCP_port = 10000;
+    baudRate = 9600;
+    const char* serial_port = "/dev/ttyS0";
+    }
+
+  else{
+    TCP_port = atoi( argv[1] );
+    baudRate = atoi( argv[2] );
+    const char* serial_port = argv[3];
+  }
+    
+
+  setvbuf(stdout, NULL, _IONBF, 0);	// what?
+  /* 
+     get TCP port number, 
+   */
+
+  run(TCP_port);				// event loop
+  return 0;				// exit
 }
