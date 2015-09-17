@@ -88,10 +88,13 @@
 void do_read(evutil_socket_t fd, short events, void *arg);
 void do_write(evutil_socket_t fd, short events, void *arg);
 
+/*
+  // superfluous function 
 char rot13_char(char c)
 {
-    /* We don't want to use isalpha here; setting the locale would change
-     * which characters are considered alphabetical. */
+    // We don't want to use isalpha here; setting the locale would change
+    //   which characters are considered alphabetical. 
+
     if ((c >= 'a' && c <= 'm') || (c >= 'A' && c <= 'M'))
         return c + 13;
     else if ((c >= 'n' && c <= 'z') || (c >= 'N' && c <= 'Z'))
@@ -99,18 +102,32 @@ char rot13_char(char c)
     else
         return c;
 }
+*/
 
+
+/*
+  structure to store state.
+  
+  What gets stored in buffer exactly?  Lines?
+  
+ */
 struct fd_state {
-    char buffer[MAX_LINE];
-    size_t buffer_used;
-
-    size_t n_written;
-    size_t write_upto;
-
-    struct event *read_event;
-    struct event *write_event;
+  char buffer[MAX_LINE];	// lines?
+  size_t buffer_used;		// 
+  
+  size_t n_written;		// bytes written
+  size_t write_upto;		// limit on bytes
+  
+  // event structs are explained at:  
+  // (browse-url "http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/structevent.html")
+  // alternatively at:
+  // (find-file-other-window "/usr/include/event2/event.h")
+  struct event *read_event;	
+  struct event *write_event;
 };
 
+// allocate state?
+// this needs better explanation
 struct fd_state* alloc_fd_state(struct event_base *base, evutil_socket_t fd)
 {
     struct fd_state *state = malloc(sizeof(struct fd_state));
@@ -136,6 +153,7 @@ struct fd_state* alloc_fd_state(struct event_base *base, evutil_socket_t fd)
     return state;
 }
 
+// somewhat straight forward
 void free_fd_state(struct fd_state *state)
 {
     event_free(state->read_event);
@@ -143,9 +161,11 @@ void free_fd_state(struct fd_state *state)
     free(state);
 }
 
+// read from socket.
+// do what with data?
 void do_read(evutil_socket_t fd, short events, void *arg)
 {
-    struct fd_state *state = arg;
+    struct fd_state *state = arg;  
     char buf[1024];
     int i;
     ssize_t result;
@@ -157,7 +177,8 @@ void do_read(evutil_socket_t fd, short events, void *arg)
 
         for (i=0; i < result; ++i)  {
             if (state->buffer_used < sizeof(state->buffer))
-                state->buffer[state->buffer_used++] = rot13_char(buf[i]);
+	      // state->buffer[state->buffer_used++] = rot13_char(buf[i]);
+	      state->buffer[state->buffer_used++] = buf[i];
             if (buf[i] == '\n') {
                 assert(state->write_event);
                 event_add(state->write_event, NULL);
@@ -237,13 +258,6 @@ void run(void)
 
     listener = socket(AF_INET, SOCK_STREAM, 0);
     evutil_make_socket_nonblocking(listener);
-
-#ifndef WIN32
-    {
-        int one = 1;
-        setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
-    }
-#endif
 
     if (bind(listener, (struct sockaddr*)&sin, sizeof(sin)) < 0) {
         perror("bind");

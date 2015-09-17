@@ -84,10 +84,11 @@ int main(int argc, char *argv[])
      struct sockaddr_in serv_addr, cli_addr;
      int n;
 
-     // get port from commandline
-     if (argc < 2) {
-         fprintf(stderr,"ERROR, no port provided\n");
-         exit(1);
+     // get TCP port, baudrate and serial port from commandline
+     if (argc < 4) {
+       // fprintf(stderr,"ERROR, no port provided\n");
+       
+       exit(1);
      }
      
      // file descriptor

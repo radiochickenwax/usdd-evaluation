@@ -66,5 +66,14 @@ open_port(void)
 
 
 ***** STARTED (http://www.wangafu.net/~nickm/libevent-book/01_intro.html ) determine difference between libevent (event2/event.h ) and plain sys/socket.h calls
+
+      Wed Sep 16, 2015 16:07:22
+      Still re-reading
+      http://www.wangafu.net/~nickm/libevent-book/01_intro.html
+
+      It looks like event.h simplifies the asynchronicity of an event
+      loop tremendously.  That's its purpose more so than replacing
+      socket.h which is what I was originally thinking. 
+
 **** TODO Fill in architecture using socket.h or event.h
-*** TODO 
+
