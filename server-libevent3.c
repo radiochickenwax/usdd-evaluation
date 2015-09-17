@@ -67,32 +67,60 @@ static void accept_error_cb(struct evconnlistener *listener, void *ctx)
 
 int main(int argc, char **argv)
 {
-    struct event_base *base;
-    struct evconnlistener *listener;
-    struct sockaddr_un sin;	// specifies a unix socket (file)
+  int TCP_port, baudRate;
+  const char* serial_port;
+  struct event_base *base;
+  struct evconnlistener *listener;
+  // struct sockaddr_un sin;	// specifies a unix socket (file)
+  struct sockaddr_in sin;	// specifies a unix socket (file)
 
-    // Create new event base
-    // ----------------------
-    // http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/structevent__base.html
-    // Structure to hold information and state for a Libevent dispatch loop.
-    //  keeps track of all pending and active events, and notifies your application of the active ones.
+  // if commandline args are not set, then use defaults
+  if ( argc < 4 ){
+    TCP_port = 10000;
+    baudRate = 9600;
+    serial_port = "/dev/ttyS0";
+  }
+  
+  else{
+    TCP_port = atoi( argv[1] );
+    baudRate = atoi( argv[2] );
+    serial_port = argv[3];
+  }
 
-    base = event_base_new();
-    if (!base) {
-        puts("Couldn't open event base");
-        return 1;
-    }
+    
+  printf("Server starting with the following parameters:\n");
+  printf("tcp: %d, baud: %d, serial: %s\n",TCP_port,baudRate,serial_port);
 
+  // Create new event base
+  // ----------------------
+  // http://www.wangafu.net/~nickm/libevent-2.0/doxygen/html/structevent__base.html
+  // Structure to hold information and state for a Libevent dispatch loop.
+  //  keeps track of all pending and active events, and notifies your application of the active ones.
+  
+  base = event_base_new();
+  if (!base) {
+    puts("Couldn't open event base");
+    return 1;
+  }
+  
     // Clear the sockaddr before using it, in case there are extra
     //  platform-specific fields that can mess us up. 
     // note that this is using a unix socket, not a tcp port
+  
+    /*
+      memset(&sin, 0, sizeof(sin));
+      sin.sun_family = AF_LOCAL;
+      strcpy(sin.sun_path, UNIX_SOCK_PATH);
+    */
+  
+  // setup tcp socket
+  sin.sin_family = AF_INET;
+  sin.sin_addr.s_addr = 0;
+  sin.sin_port = htons(TCP_port);  // convert int to network byte order
+  
 
-    memset(&sin, 0, sizeof(sin));
-    sin.sun_family = AF_LOCAL;
-    strcpy(sin.sun_path, UNIX_SOCK_PATH);
-
-    // Create a new listener 
-    listener = evconnlistener_new_bind(base, accept_conn_cb, NULL,
+  // Create a new listener 
+  listener = evconnlistener_new_bind(base, accept_conn_cb, NULL,
                                        LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE, -1,
                                        (struct sockaddr *) &sin, sizeof(sin));
     if (!listener) {

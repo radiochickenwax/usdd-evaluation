@@ -293,6 +293,8 @@ int main(int argc, char **argv)
   printf("Server started with the following parameters:\n");
   printf("tcp: %d, baud: %d, serial: %s\n",TCP_port,baudRate,serial_port);
 
+  // http://linux.die.net/man/3/setvbuf
+  // _IONBF => unbuffered stream to stdout
   setvbuf(stdout, NULL, _IONBF, 0);	// what?
   /* 
      get TCP port number, 
