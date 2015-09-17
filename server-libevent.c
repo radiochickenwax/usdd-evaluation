@@ -275,21 +275,22 @@ void run(int portNo)
 int main(int argc, char **argv)
 {
   int TCP_port, baudRate;
-
+  const char* serial_port;
   
   // if commandline args are not set, then use defaults
   if ( argc < 4 ){
     TCP_port = 10000;
     baudRate = 9600;
-    const char* serial_port = "/dev/ttyS0";
+    serial_port = "/dev/ttyS0";
     }
 
   else{
     TCP_port = atoi( argv[1] );
     baudRate = atoi( argv[2] );
-    const char* serial_port = argv[3];
+    serial_port = argv[3];
   }
     
+  printf("tcp: %d, baud: %d, serial: %s",TCP_port,baudRate,serial_port);
 
   setvbuf(stdout, NULL, _IONBF, 0);	// what?
   /* 
