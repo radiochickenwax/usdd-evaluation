@@ -250,7 +250,7 @@ void run(int portNo)
 
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = 0;
-    sin.sin_port = htons(portNo);
+    sin.sin_port = htons(portNo);  // convert int to network byte order
 
     listener = socket(AF_INET, SOCK_STREAM, 0);
     evutil_make_socket_nonblocking(listener);
@@ -290,7 +290,8 @@ int main(int argc, char **argv)
     serial_port = argv[3];
   }
     
-  printf("tcp: %d, baud: %d, serial: %s",TCP_port,baudRate,serial_port);
+  printf("Server started with the following parameters:\n");
+  printf("tcp: %d, baud: %d, serial: %s\n",TCP_port,baudRate,serial_port);
 
   setvbuf(stdout, NULL, _IONBF, 0);	// what?
   /* 
