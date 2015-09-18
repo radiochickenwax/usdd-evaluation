@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/signal.h>
 #include <sys/types.h>
 
@@ -340,6 +341,7 @@ main(int Parm_Count, char *Parms[])
    }
    fclose(input);
    fclose(output);
+   return 0;
 }  //end of main
 
 /***************************************************************************
